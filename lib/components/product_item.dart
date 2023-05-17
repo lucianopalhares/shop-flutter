@@ -23,7 +23,7 @@ class ProductItem extends StatelessWidget {
       context: context, 
       builder: (ctx) {
         return AlertDialog(
-          title: const Text('Por favor confirme'),
+          title: const Text('Por favor confirme.'),
           content: const Text('Quer mesmo excluir o produto?'),actions: [
             TextButton(
               onPressed: () => {
