@@ -17,9 +17,11 @@ class ProductItem extends StatelessWidget {
     }
   ) : super(key: key);
 
-  void confirmDeleteProduct(Product product, BuildContext context) {
+  Future<void> confirmDeleteProduct(Product product, BuildContext context) {
+
+    final msgBottom = ScaffoldMessenger.of(context);
     
-    showDialog(
+    return showDialog(
       context: context, 
       builder: (ctx) {
         return AlertDialog(
@@ -27,25 +29,37 @@ class ProductItem extends StatelessWidget {
           content: const Text('Quer mesmo excluir o produto?'),actions: [
             TextButton(
               onPressed: () => {
-                Provider.of<ProductList>(context, listen: false).deleteProduct(product),
-                Navigator.of(context).pop()
+                Navigator.of(context).pop(true)
               }, 
               child: const Text('Sim')
             ), 
             TextButton(
               onPressed: () => {
-                Navigator.of(context).pop()
+                Navigator.of(context).pop(false)
               }, 
               child: const Text('Não')
             )
           ],
         );
       }
-    );
+    ).then((value) async {
+      if (value ?? false) {
+        try {
+          await Provider.of<ProductList>(context, listen: false).deleteProduct(product);
+        } catch (e) {
+          msgBottom.showSnackBar(
+            SnackBar(content: Text(e.toString()))
+          );          
+        }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+
+    
+
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(product.imageUrl),

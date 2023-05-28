@@ -7,20 +7,22 @@ import 'package:shop/data/dummy_data.dart';
 import 'package:shop/models/product.dart';
 import 'package:http/http.dart' as http;
 
+import '../exceptions/http_exception.dart';
+import '../utils/constants.dart';
+
 class ProductList with ChangeNotifier {
   List<Product> _items = [];//dummyProducts; 
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems => _items.where((prod) => prod.isFavorite).toList();
 
-  final _baseUrl = 'https://shop-cod3r-ef203-default-rtdb.firebaseio.com';
 
   int get itemsCount {
     return _items.length;
   }
 
   Future<void> addProduct(Product product) async {
-    var uriProduct = Uri.parse('$_baseUrl/products.json');
+    var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/products.json');
 
     var firebaseProduct = jsonEncode({
       "name": product.name,
@@ -62,7 +64,7 @@ class ProductList with ChangeNotifier {
 
     if (index >=0) {
 
-      var uriProduct = Uri.parse('$_baseUrl/products/${product.id}.json');
+      var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/products/${product.id}.json');
 
       var firebaseProduct = jsonEncode({
         "name": product.name,
@@ -93,7 +95,7 @@ class ProductList with ChangeNotifier {
       final product = _items[index];
       _items.remove(product);
 
-      var uriProduct = Uri.parse('$_baseUrl/products/${product.id}.json');
+      var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/products/${product.id}.json');
 
       var firebaseProduct = jsonEncode({
         "name": product.name,
@@ -110,7 +112,13 @@ class ProductList with ChangeNotifier {
       });
 
       if (response.statusCode >= 400) {
+     
         _items.insert(index, product);
+
+        throw HttpException(
+          msg: 'Nao foi possivel excluir o produto',
+          statusCode: response.statusCode 
+        );
       }
 
       //_items.removeWhere((el) => el.id == product.id);
@@ -124,7 +132,7 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     _items.clear();
 
-    final response = await http.get(Uri.parse('$_baseUrl/products.json'));
+    final response = await http.get(Uri.parse('${Constants.PRODUCT_BASE_URL}/products.json'));
 
     if (response.body == 'null') return;
 
