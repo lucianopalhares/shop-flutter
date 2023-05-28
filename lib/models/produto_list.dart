@@ -22,7 +22,7 @@ class ProductList with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/products.json');
+    var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}.json');
 
     var firebaseProduct = jsonEncode({
       "name": product.name,
@@ -64,7 +64,7 @@ class ProductList with ChangeNotifier {
 
     if (index >=0) {
 
-      var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/products/${product.id}.json');
+      var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/${product.id}.json');
 
       var firebaseProduct = jsonEncode({
         "name": product.name,
@@ -95,7 +95,7 @@ class ProductList with ChangeNotifier {
       final product = _items[index];
       _items.remove(product);
 
-      var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/products/${product.id}.json');
+      var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/${product.id}.json');
 
       var firebaseProduct = jsonEncode({
         "name": product.name,
@@ -132,7 +132,7 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     _items.clear();
 
-    final response = await http.get(Uri.parse('${Constants.PRODUCT_BASE_URL}/products.json'));
+    final response = await http.get(Uri.parse('${Constants.PRODUCT_BASE_URL}.json'));
 
     if (response.body == 'null') return;
 

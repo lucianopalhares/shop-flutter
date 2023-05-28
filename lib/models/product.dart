@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/constants.dart';
+
 class Product with ChangeNotifier {
   final String id;
   final String name;
@@ -11,8 +13,6 @@ class Product with ChangeNotifier {
   final double price;
   final String imageUrl;
   bool isFavorite;
-
-  final _baseUrl = 'https://shop-cod3r-ef203-default-rtdb.firebaseio.com';
 
   Product({
     required this.id, 
@@ -29,7 +29,7 @@ class Product with ChangeNotifier {
     bool isFavoriteChanged = !isFavorite;
 
     try {
-      var uriProduct = Uri.parse('$_baseUrl/products/${id}.json');
+      var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/${id}.json');
 
       var firebaseProduct = jsonEncode({
         "isFavorite": isFavoriteChanged,
