@@ -7,32 +7,12 @@ import 'package:shop/components/app_drawer.dart';
 import '../components/order_widget.dart';
 import '../models/order_list.dart';
 
-class OrdersPage extends StatefulWidget {
+class OrdersPage extends StatelessWidget {
   const OrdersPage({super.key});
 
-  @override
-  State<OrdersPage> createState() => _OrdersPageState();
-}
-
-class _OrdersPageState extends State<OrdersPage> {
-
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    loadOrders();
-  }
-
-  loadOrders() {
-      Provider.of<OrderList>(context, listen: false).
-      loadOrders().then((value) {
-        setState(() {
-          _isLoading = false;
-        });   
-      });
-    
+  loadOrders(BuildContext context) {
+    Provider.of<OrderList>(context, listen: false).
+      loadOrders();    
   }
 
   Future<void> _refreshOrders(BuildContext context) {
@@ -41,14 +21,36 @@ class _OrdersPageState extends State<OrdersPage> {
 
   @override
   Widget build(BuildContext context) {
-    final OrderList orders = Provider.of(context);
+    //final OrderList orders = Provider.of(context);
     
     return Scaffold(
       appBar: AppBar(
         title: Text('Meus Pedidos'),
       ),
       drawer: AppDrawer(),
-      body: _isLoading 
+      body: FutureBuilder(
+        future: _refreshOrders(context),
+        builder: (ctx, snapShot) {
+          if (snapShot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator(),);
+          
+          } else if (snapShot.hasError) {
+            return Center(
+              child: Text('Ocorreu um erro!')
+            );
+          } else {
+            return Consumer<OrderList>(
+              builder: (ctx, orders, child) => ListView.builder(
+                itemBuilder: (ctx, i) => OrderWidget(
+                  order: orders.items[i]
+                ), 
+                itemCount: orders.itemsCount,
+              )
+            );
+          }
+        }
+      ),
+      /*body: _isLoading 
         ? Center(child: CircularProgressIndicator())
         : RefreshIndicator(
           onRefresh: () => _refreshOrders(context), 
@@ -57,7 +59,7 @@ class _OrdersPageState extends State<OrdersPage> {
             itemBuilder: (ctx, i) => 
               OrderWidget(order: orders.items[i])
           )
-        ),
+        ),*/
     );
   }
 }
