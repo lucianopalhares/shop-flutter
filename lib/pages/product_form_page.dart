@@ -26,6 +26,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
   final _formKey = GlobalKey<FormState>();
   final _formData = Map<String, Object>();
 
+  bool _isLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -59,7 +61,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     return isValidUrl && endsWithFile;
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if (!isValid) {
@@ -67,16 +69,47 @@ class _ProductFormPageState extends State<ProductFormPage> {
     }
 
     _formKey.currentState?.save();
-    //print(_formData.values);
+    
+    setState(() {
+      _isLoading = true;
+    });
 
     /*
+      ProductList extende de um ChangeNotifier e
       como o ProductList esta dentro do MultiProvider da main
       ele é derivado do Provider
       assim aqui pega ele pelo context
       e chama seu metodo
     */
-    Provider.of<ProductList>(context, listen: false).saveProductForm(_formData);
-    Navigator.of(context).pop();//volta pra tela anterior
+
+    try {
+
+      await Provider.of<ProductList>(context, listen: false).saveProductForm(_formData);
+
+      Navigator.of(context).pop();
+
+    } catch (e) {
+
+      showDialog<void>(context: context, 
+        builder: (ctx) => AlertDialog(
+          title: Text('Ocorreu um Erro'),
+          content: Text('Ocorreu um erro para salvar o produto.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), 
+              child: Text('Ok')
+            )
+          ],
+        )
+      );
+
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }    
+   
+    //veja em produto_list
   }
 
   @override
@@ -92,7 +125,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
         final product = arg as Product;
 
         _formData['id'] = product.id;
-        _formData['title'] = product.title;
+        _formData['name'] = product.name;
         _formData['price'] = product.price;
         _formData['description'] = product.description;
         _formData['imageUrl'] = product.imageUrl;
@@ -114,21 +147,24 @@ class _ProductFormPageState extends State<ProductFormPage> {
           )
         ],
       ),
-      body: Padding(
+      body: _isLoading
+        ? Center(
+          child: CircularProgressIndicator(),
+        ) : Padding(
         padding: const EdgeInsets.all(15),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
               TextFormField(
-                initialValue: _formData['title']?.toString(),
+                initialValue: _formData['name']?.toString(),
                 decoration: InputDecoration(labelText: 'Nome'),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_priceFocus);
                 },
                 onSaved: (name) => {
-                  _formData['title'] = name ?? ''
+                  _formData['name'] = name ?? ''
                 },
                 validator: (_name) {
                   final name = _name ?? '';
