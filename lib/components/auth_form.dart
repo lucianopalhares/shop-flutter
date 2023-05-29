@@ -21,6 +21,8 @@ class _AuthFormState extends State<AuthForm> {
   };
 
   final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   bool _isLogin() => _authMode == AuthMode.Login;
   bool _isSignup() => _authMode == AuthMode.Signup;
@@ -36,7 +38,9 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   void _submit() {
-
+    setState(() {
+      _isLoading = true;
+    });
   }
 
   @override
@@ -104,21 +108,24 @@ class _AuthFormState extends State<AuthForm> {
                   },
                 ),
               SizedBox(height: 20,), 
-              ElevatedButton(
-                onPressed: _submit, 
-                child: Text(
-                  _isLogin() ? 'ENTRAR' : 'REGISTRAR'
-                ), 
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)
+              if (_isLoading) 
+                CircularProgressIndicator()
+              else
+                ElevatedButton(
+                  onPressed: _submit, 
+                  child: Text(
+                    _isLogin() ? 'ENTRAR' : 'REGISTRAR'
                   ), 
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 30, 
-                    vertical: 8
-                  )
-                ),
-              ), 
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)
+                    ), 
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30, 
+                      vertical: 8
+                    )
+                  ),
+                ), 
               Spacer(), 
               TextButton(
                 onPressed: _switchAuthMode, 
