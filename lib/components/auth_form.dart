@@ -22,6 +22,9 @@ class _AuthFormState extends State<AuthForm> {
 
   final _passwordController = TextEditingController();
 
+  bool _isLogin() => _authMode == AuthMode.Login;
+  bool _isSignup() => _authMode == AuthMode.Signup;
+
   void _submit() {
 
   }
@@ -73,14 +76,14 @@ class _AuthFormState extends State<AuthForm> {
                   return null;
                 },
               ), 
-              if (_authMode == AuthMode.Signup) 
+              if (_isSignup()) 
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Confirmação de Senha'
                   ),
                   keyboardType: TextInputType.emailAddress,
                   obscureText: true,
-                  validator: _authMode == AuthMode.Login 
+                  validator: _isLogin()
                     ? null 
                     : (_password) {
                     final password = _password ?? '';
@@ -94,7 +97,7 @@ class _AuthFormState extends State<AuthForm> {
               ElevatedButton(
                 onPressed: _submit, 
                 child: Text(
-                  _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR'
+                  _isLogin() ? 'ENTRAR' : 'REGISTRAR'
                 ), 
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
