@@ -64,6 +64,10 @@ class _AuthFormState extends State<AuthForm> {
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)
+                  ), 
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30, 
+                    vertical: 8
                   )
                 ),
               )
