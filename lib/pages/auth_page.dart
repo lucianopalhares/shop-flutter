@@ -25,8 +25,14 @@ class AuthPage extends StatelessWidget {
           Container(
             width: double.infinity,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20), 
+                    color: Colors.deepOrange.shade900
+                  ),
                   child: Text(
                     'Minha Loja',
                     style: TextStyle(
