@@ -25,6 +25,16 @@ class _AuthFormState extends State<AuthForm> {
   bool _isLogin() => _authMode == AuthMode.Login;
   bool _isSignup() => _authMode == AuthMode.Signup;
 
+  void _switchAuthMode() {
+    setState(() {
+      if (_isLogin()) {
+        _authMode = AuthMode.Signup;
+      } else {
+        _authMode = AuthMode.Login;
+      }
+    });
+  }
+
   void _submit() {
 
   }
@@ -38,7 +48,7 @@ class _AuthFormState extends State<AuthForm> {
         borderRadius: BorderRadius.circular(10) 
       ),
       child: Container(
-        height: 320, 
+        height: _isLogin() ? 310 : 400, 
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -108,6 +118,13 @@ class _AuthFormState extends State<AuthForm> {
                     vertical: 8
                   )
                 ),
+              ), 
+              Spacer(), 
+              TextButton(
+                onPressed: _switchAuthMode, 
+                child: Text(
+                  _isLogin() ? 'DESEJA REGISTRAR?' : 'JÁ POSSUI CONTA?'
+                )
               )
             ],
           )
