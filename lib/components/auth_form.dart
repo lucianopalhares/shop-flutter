@@ -20,6 +20,8 @@ class _AuthFormState extends State<AuthForm> {
     'password': ''
   };
 
+  final _passwordController = TextEditingController();
+
   void _submit() {
 
   }
@@ -54,7 +56,8 @@ class _AuthFormState extends State<AuthForm> {
                 keyboardType: TextInputType.emailAddress,
                 obscureText: true,
                 onSaved: (password) => 
-                  _authData['password'] = password ?? ''
+                  _authData['password'] = password ?? '', 
+                controller: _passwordController,
               ), 
               if (_authMode == AuthMode.Signup) 
                 TextFormField(
@@ -63,6 +66,13 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   obscureText: true,
+                  validator: (_password) {
+                    final password = _password ?? '';
+                    if (password != _passwordController.text) {
+                      return 'Senhas informadas nao conferem';
+                    }
+                    return null;
+                  },
                 ),
               SizedBox(height: 20,), 
               ElevatedButton(
