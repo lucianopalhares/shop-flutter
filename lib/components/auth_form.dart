@@ -13,7 +13,12 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm> {
-  AuthMode _authMode = AuthMode.Signup;
+  AuthMode _authMode = AuthMode.Login;
+  
+  Map<String, String> _authData = {
+    'email': '', 
+    'password': ''
+  };
 
   void _submit() {
 
@@ -39,6 +44,8 @@ class _AuthFormState extends State<AuthForm> {
                   labelText: 'Email'
                 ),
                 keyboardType: TextInputType.emailAddress,
+                onSaved: (email) => 
+                  _authData['email'] = email ?? ''
               ), 
               TextFormField(
                 decoration: InputDecoration(
@@ -46,6 +53,8 @@ class _AuthFormState extends State<AuthForm> {
                 ),
                 keyboardType: TextInputType.emailAddress,
                 obscureText: true,
+                onSaved: (password) => 
+                  _authData['password'] = password ?? ''
               ), 
               if (_authMode == AuthMode.Signup) 
                 TextFormField(
