@@ -15,6 +15,7 @@ class _AuthFormState extends State<AuthForm> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
+        padding: const EdgeInsets.all(16),
         child: Form(
           child: Column(
             children: [
