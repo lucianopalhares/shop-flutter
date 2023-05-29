@@ -80,7 +80,9 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   obscureText: true,
-                  validator: (_password) {
+                  validator: _authMode == AuthMode.Login 
+                    ? null 
+                    : (_password) {
                     final password = _password ?? '';
                     if (password != _passwordController.text) {
                       return 'Senhas informadas nao conferem';
