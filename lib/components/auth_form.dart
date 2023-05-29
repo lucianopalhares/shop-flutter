@@ -15,6 +15,10 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm> {
   AuthMode _authMode = AuthMode.Signup;
 
+  void _submit() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -50,8 +54,14 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   obscureText: true,
+                ),
+              SizedBox(height: 20,), 
+              ElevatedButton(
+                onPressed: _submit, 
+                child: Text(
+                  _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR'
                 )
-              
+              )
             ],
           )
         ),
