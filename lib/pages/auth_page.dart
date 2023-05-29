@@ -35,7 +35,14 @@ class AuthPage extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20), 
-                    color: Colors.deepOrange.shade900
+                    color: Colors.deepOrange.shade900, 
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 8, 
+                        color: Colors.black26, 
+                        offset: Offset(0, 2)
+                      )
+                    ]
                   ),
                   child: Text(
                     'Minha Loja',
