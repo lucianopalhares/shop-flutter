@@ -31,6 +31,13 @@ class _AuthFormState extends State<AuthForm> {
                   labelText: 'Email'
                 ),
                 keyboardType: TextInputType.emailAddress,
+              ), 
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Senha'
+                ),
+                keyboardType: TextInputType.emailAddress,
+                obscureText: true,
               )
             ],
           )
