@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:shop/components/auth_form.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -53,7 +54,8 @@ class AuthPage extends StatelessWidget {
                       color: Theme.of(context).accentTextTheme.headline6?.color
                     ), 
                   ),
-                )
+                ), 
+                AuthForm()
               ],
             ),
           )
