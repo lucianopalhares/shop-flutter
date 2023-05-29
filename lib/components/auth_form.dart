@@ -13,12 +13,15 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     return Card(
       elevation: 8,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10) 
       ),
       child: Container(
+        height: 320, 
+        width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16),
         child: Form(
           child: Column(
