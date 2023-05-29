@@ -60,7 +60,12 @@ class _AuthFormState extends State<AuthForm> {
                 onPressed: _submit, 
                 child: Text(
                   _authMode == AuthMode.Login ? 'ENTRAR' : 'REGISTRAR'
-                )
+                ), 
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)
+                  )
+                ),
               )
             ],
           )
