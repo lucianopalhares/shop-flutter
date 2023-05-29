@@ -29,6 +29,10 @@ class AuthPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10, 
+                    horizontal: 70
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20), 
                     color: Colors.deepOrange.shade900
