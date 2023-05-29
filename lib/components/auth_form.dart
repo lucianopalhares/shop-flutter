@@ -47,7 +47,14 @@ class _AuthFormState extends State<AuthForm> {
                 ),
                 keyboardType: TextInputType.emailAddress,
                 onSaved: (email) => 
-                  _authData['email'] = email ?? ''
+                  _authData['email'] = email ?? '', 
+                validator: (_email) {
+                  final email = _email ?? '';
+                  if (email.trim().isEmpty || !email.contains('@')) {
+                    return 'Informe um email válido';
+                  }
+                  return null;
+                },
               ), 
               TextFormField(
                 decoration: InputDecoration(
@@ -58,6 +65,13 @@ class _AuthFormState extends State<AuthForm> {
                 onSaved: (password) => 
                   _authData['password'] = password ?? '', 
                 controller: _passwordController,
+                validator: (_password) {
+                  final password = _password ?? '';
+                  if (password.isEmpty || password.length < 5) {
+                    return 'Informe uma senha válida';
+                  }
+                  return null;
+                },
               ), 
               if (_authMode == AuthMode.Signup) 
                 TextFormField(
