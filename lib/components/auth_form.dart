@@ -14,7 +14,9 @@ class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Text('Form')
+      child: Container(
+        child: Text('Form')
+      )
     );
   }
 }
