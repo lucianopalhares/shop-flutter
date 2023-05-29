@@ -38,8 +38,26 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   void _submit() {
+    //se o formulario esta validado
+    final isValid = _formKey.currentState?.validate() ?? false;
+
+    if (!isValid) return;
+
     setState(() {
       _isLoading = true;
+    });
+
+    // pega os dados do form
+    _formKey.currentState?.save();
+
+    if (_isLogin()) {
+      //valida login
+    } else {
+      //valida registro
+    }
+
+    setState(() {
+      _isLoading = false;
     });
   }
 
@@ -56,6 +74,7 @@ class _AuthFormState extends State<AuthForm> {
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16),
         child: Form(
+          key: _formKey,
           child: Column(
             children: [
               TextFormField(
