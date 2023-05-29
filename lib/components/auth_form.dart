@@ -15,8 +15,19 @@ class _AuthFormState extends State<AuthForm> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        child: Text('Form')
-      )
+        child: Form(
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Email'
+                ),
+                keyboardType: TextInputType.emailAddress,
+              )
+            ],
+          )
+        ),
+      ),
     );
   }
 }
