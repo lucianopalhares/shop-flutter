@@ -8,6 +8,7 @@ import 'package:shop/pages/product_form_page.dart';
 import 'package:shop/pages/products_page.dart';
 import 'package:shop/pages/products_overview_page.dart';
 
+import 'models/auth.dart';
 import 'models/cart.dart';
 import 'models/order_list.dart';
 import 'models/produto_list.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProductList(),),
         ChangeNotifierProvider(create: (_) => Cart(),),
         ChangeNotifierProvider(create: (_) => OrderList(),),
+        ChangeNotifierProvider(create: (_) => Auth(),),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
