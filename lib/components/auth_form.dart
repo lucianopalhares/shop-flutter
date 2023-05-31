@@ -54,6 +54,15 @@ class _AuthFormState extends State<AuthForm> {
     // pega os dados do form
     _formKey.currentState?.save();
     Auth auth = Provider.of(context, listen: false);
+    
+    void _showErrorDialog(String msg) {
+      showDialog(
+        context: context, 
+        builder: (ctx) => AlertDialog(
+          title: Text('Ocorreu um erro'),
+        )
+      );
+    }
 
     try {
       if (_isLogin()) {
@@ -68,7 +77,7 @@ class _AuthFormState extends State<AuthForm> {
         );
       }
     } on AuthException catch (error) {
-      print(error.key);
+      _showErrorDialog(error.key);
     }
 
 
