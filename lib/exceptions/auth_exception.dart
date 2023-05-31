@@ -15,6 +15,7 @@ class AuthException implements Exception {
   @override
   String toString() {
     // TODO: implement toString
+    print(key);
     return errors[key] ?? 'Ocorreu um erro no processo de autenticação';
   }
 }
