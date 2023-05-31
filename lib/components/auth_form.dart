@@ -60,6 +60,13 @@ class _AuthFormState extends State<AuthForm> {
         context: context, 
         builder: (ctx) => AlertDialog(
           title: Text('Ocorreu um erro'),
+          content: Text(msg), 
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), 
+              child: Text('Fechar')
+            )
+          ],
         )
       );
     }
@@ -77,7 +84,9 @@ class _AuthFormState extends State<AuthForm> {
         );
       }
     } on AuthException catch (error) {
-      _showErrorDialog(error.key);
+      _showErrorDialog(error.toString());
+    } catch (error) {
+      _showErrorDialog('Ocorreu um erro inesperado!');
     }
 
 
