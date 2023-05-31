@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
+import '../exceptions/auth_exception.dart';
 import '../models/auth.dart';
 
 enum AuthMode { Signup, Login }
@@ -54,17 +55,23 @@ class _AuthFormState extends State<AuthForm> {
     _formKey.currentState?.save();
     Auth auth = Provider.of(context, listen: false);
 
-    if (_isLogin()) {
-      await auth.login(
-        _authData['email']!, 
-        _authData['password']!
-      );
-    } else {
-      await auth.signup(
-        _authData['email']!, 
-        _authData['password']!
-      );
+    try {
+      if (_isLogin()) {
+        await auth.login(
+          _authData['email']!, 
+          _authData['password']!
+        );
+      } else {
+        await auth.signup(
+          _authData['email']!, 
+          _authData['password']!
+        );
+      }
+    } on AuthException catch (error) {
+      print(error.key);
     }
+
+
 
     setState(() {
       _isLoading = false;
