@@ -11,11 +11,13 @@ import '../exceptions/http_exception.dart';
 import '../utils/constants.dart';
 
 class ProductList with ChangeNotifier {
+  String _token;
   List<Product> _items = [];//dummyProducts; 
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems => _items.where((prod) => prod.isFavorite).toList();
 
+  ProductList(this._token, this._items);
 
   int get itemsCount {
     return _items.length;
