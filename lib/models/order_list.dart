@@ -26,7 +26,7 @@ class OrderList with ChangeNotifier {
   Future<void> addOrder(Cart cart) async {
     final date = DateTime.now();
 
-    var uriOrder = Uri.parse('${Constants.ORDER_BASE_URL}.json');
+    var uriOrder = Uri.parse('${Constants.ORDER_BASE_URL}.json?auth=$_token');
 
     var firebaseCart = jsonEncode({
       "total": cart.totalAmount,
@@ -72,7 +72,7 @@ class OrderList with ChangeNotifier {
   Future<void> loadOrders() async {
     _items.clear();
 
-    final response = await http.get(Uri.parse('${Constants.ORDER_BASE_URL}.json'));
+    final response = await http.get(Uri.parse('${Constants.ORDER_BASE_URL}.json?auth=$_token'));
 
     if (response.body == 'null') return;
 
