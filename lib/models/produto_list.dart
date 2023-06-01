@@ -11,7 +11,7 @@ import '../exceptions/http_exception.dart';
 import '../utils/constants.dart';
 
 class ProductList with ChangeNotifier {
-  String _token;
+  final String _token;
   List<Product> _items = [];//dummyProducts; 
 
   List<Product> get items => [..._items];
@@ -134,7 +134,7 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     _items.clear();
 
-    final response = await http.get(Uri.parse('${Constants.PRODUCT_BASE_URL}.json'));
+    final response = await http.get(Uri.parse('${Constants.PRODUCT_BASE_URL}.json?auth=$_token'));
 
     if (response.body == 'null') return;
 

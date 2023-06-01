@@ -10,7 +10,10 @@ import 'cart.dart';
 import 'order.dart';
 
 class OrderList with ChangeNotifier {
+  final String _token;
   List<Order> _items = [];
+
+  OrderList(this._token, this._items);
 
   List<Order> get items {
     return [..._items];

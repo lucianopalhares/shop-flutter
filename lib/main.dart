@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
+      providers: [        
         ChangeNotifierProvider(create: (_) => Auth(),),
         ChangeNotifierProxyProvider<Auth, ProductList>(
           create: (_) => ProductList('', []),
@@ -37,8 +37,16 @@ class MyApp extends StatelessWidget {
             );
           }
         ),
-        ChangeNotifierProvider(create: (_) => Cart(),),
-        ChangeNotifierProvider(create: (_) => OrderList(),),        
+        ChangeNotifierProxyProvider<Auth, OrderList>(
+          create: (_) => OrderList('', []),
+          update: (context, auth, create) {
+            return OrderList(
+              auth.token ?? '', 
+              create?.items ?? []
+            );
+          }
+        ),
+        ChangeNotifierProvider(create: (_) => Cart(),)                
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
