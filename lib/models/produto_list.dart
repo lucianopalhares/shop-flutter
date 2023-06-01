@@ -17,7 +17,7 @@ class ProductList with ChangeNotifier {
   List<Product> get items => [..._items];
   List<Product> get favoriteItems => _items.where((prod) => prod.isFavorite).toList();
 
-  ProductList(this._token, this._items);
+  ProductList([this._token = '', this._items = const []]);
 
   int get itemsCount {
     return _items.length;
