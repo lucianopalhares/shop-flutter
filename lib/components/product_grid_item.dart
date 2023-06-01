@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/utils/app_routes.dart';
 
+import '../models/auth.dart';
 import '../models/cart.dart';
 import '../models/product.dart';
 
@@ -18,6 +19,11 @@ class ProductGridItem extends StatelessWidget {
     );  
 
     final cart = Provider.of<Cart>(
+      context, 
+      listen: false
+    ); 
+
+    final auth = Provider.of<Auth>(
       context, 
       listen: false
     ); 
@@ -42,7 +48,7 @@ class ProductGridItem extends StatelessWidget {
             leading: Consumer<Product>(
               builder: (ctx, productConsumer, exemploPassarAlgoQueNuncaMuda) => IconButton(
                 onPressed: () {
-                  product.toggleFavorite(context);
+                  product.toggleFavorite(context, auth.token);
                 }, 
                 icon: Icon(productConsumer.isFavorite ? Icons.favorite : Icons.favorite_outline), 
                 color: Theme.of(context).colorScheme.secondary,                 
