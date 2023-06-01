@@ -25,17 +25,15 @@ class Product with ChangeNotifier {
 
   get isFavorited => isFavorite;
 
-  Future<void> toggleFavorite(BuildContext context, token) async {
+  Future<void> toggleFavorite(BuildContext context, token, userId) async {
     bool isFavoriteChanged = !isFavorite;
 
     try {
-      var uriProduct = Uri.parse('${Constants.PRODUCT_BASE_URL}/${id}.json?auth=$token');
+      var uriProduct = Uri.parse('${Constants.USER_FAVORITE_URL}/$userId/${id}.json?auth=$token');
 
-      var firebaseProduct = jsonEncode({
-        "isFavorite": isFavoriteChanged,
-      });
+      var firebaseProduct = jsonEncode(isFavoriteChanged);
 
-      final response = await http.patch(
+      final response = await http.put(
         uriProduct,
         body: firebaseProduct
       );
