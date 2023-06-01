@@ -30,8 +30,7 @@ class ProductList with ChangeNotifier {
       "name": product.name,
       "description": product.description,
       "price": product.price,
-      "imageUrl": product.imageUrl,
-      "isFavorite": product.isFavorite,
+      "imageUrl": product.imageUrl
     });
 
     final response = await http.post(
@@ -52,8 +51,7 @@ class ProductList with ChangeNotifier {
         name: product.name,
         description: product.description,
         price: product.price,
-        imageUrl: product.imageUrl,
-        isFavorite: product.isFavorite
+        imageUrl: product.imageUrl
       );
       _items.add(newProduct);
       notifyListeners();
@@ -72,8 +70,7 @@ class ProductList with ChangeNotifier {
         "name": product.name,
         "description": product.description,
         "price": product.price,
-        "imageUrl": product.imageUrl,
-        //"isFavorite": product.isFavorite,
+        "imageUrl": product.imageUrl
       });
 
       final response = await http.patch(
@@ -103,8 +100,7 @@ class ProductList with ChangeNotifier {
         "name": product.name,
         "description": product.description,
         "price": product.price,
-        "imageUrl": product.imageUrl,
-        //"isFavorite": product.isFavorite,
+        "imageUrl": product.imageUrl
       });
 
       final response = await http.delete(
