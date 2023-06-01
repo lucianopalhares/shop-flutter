@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
           update: (context, auth, create) {
             return ProductList(
               auth.token ?? '', 
+              auth.userId ?? '',
               create?.items ?? []
             );
           }
