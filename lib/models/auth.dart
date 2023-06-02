@@ -71,4 +71,12 @@ class Auth extends ChangeNotifier {
   Future<void> login(String email, String password) async {    
     return _authenticate(email, password, 'signInWithPassword');    
   }
+
+  void logout() {
+    _token = null;
+    _email = null;
+    _userId = null;
+    _expireDate = null;
+    notifyListeners();
+  }
 }
