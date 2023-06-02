@@ -53,6 +53,10 @@ class AppDrawer extends StatelessWidget {
           title: Text('Sair'),
           onTap: () {
             Provider.of<Auth>(context, listen: false).logout();
+            
+            Navigator.of(context).pushReplacementNamed(
+              AppRoutes.AUTH_OR_HOME,
+            );
           },
         ),
       ]),
