@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop/exceptions/auth_exception.dart';
 
+import '../data/store.dart';
+
 class Auth extends ChangeNotifier {
 
   String? _token;
@@ -61,6 +63,19 @@ class Auth extends ChangeNotifier {
         )
       );
 
+      Store.saveMap('userData',{
+        'token': _token, 
+        'email': _email, 
+        'userId': _userId, 
+        'expireDate': _expireDate!.toIso8601String()
+      });
+
+      final userData = await Store.getMap('userData');
+
+      if (userData.isEmpty) {
+        print('userData.isEmpty = ${userData.values}');
+      }
+
       _autoLogout();
       notifyListeners();
     }
@@ -75,13 +90,44 @@ class Auth extends ChangeNotifier {
     return _authenticate(email, password, 'signInWithPassword');    
   }
 
+  Future<void> tryAutoLogin() async {
+
+    if (isAuth) return;
+
+    try {
+      final userData = await Store.getMap('userData');
+
+      if (userData.isEmpty) {
+        return;
+      }
+
+      final String expireDateString = userData['expireDate'].toString();
+
+      final expireDate = DateTime.parse(expireDateString);
+
+      if (expireDate.isBefore(DateTime.now())) return;
+
+      _token = userData['token'].toString();
+      _email = userData['email'].toString();
+      _userId = userData['userId'].toString();
+      _expireDate = expireDate;
+
+      _autoLogout();
+      notifyListeners();
+    } catch (e) {
+      print('tryAutoLogin error = $e');
+    }
+  }
+
   void logout() {
     _token = null;
     _email = null;
     _userId = null;
     _expireDate = null;
     _clearAutoLogoutTimer();
-    notifyListeners();
+    Store.remove('userData').then((_){
+      notifyListeners();
+    });    
   }
 
   void _clearAutoLogoutTimer() {
