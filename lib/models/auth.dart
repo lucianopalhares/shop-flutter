@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class Auth extends ChangeNotifier {
   String? _email;
   String? _userId;
   DateTime? _expireDate;
+  Timer? _logoutTimer;
 
   bool get isAuth {
     final isValid = _expireDate?.isAfter(DateTime.now()) ?? false;
@@ -59,6 +61,7 @@ class Auth extends ChangeNotifier {
         )
       );
 
+      _autoLogout();
       notifyListeners();
     }
 
@@ -77,6 +80,23 @@ class Auth extends ChangeNotifier {
     _email = null;
     _userId = null;
     _expireDate = null;
+    _clearAutoLogoutTimer();
     notifyListeners();
+  }
+
+  void _clearAutoLogoutTimer() {
+    _logoutTimer?.cancel(); 
+    _logoutTimer = null;
+  }
+
+  void _autoLogout() {
+    _clearAutoLogoutTimer();
+
+    final timeToLogout = _expireDate?.difference(DateTime.now()).inSeconds;
+
+    _logoutTimer = Timer(
+      Duration(seconds: timeToLogout ?? 0), 
+      logout
+    );
   }
 }
