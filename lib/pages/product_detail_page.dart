@@ -32,6 +32,15 @@ class ProductDetailPage extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
+                  const DecoratedBox(
+                    decoration: BoxDecoration(                      
+                      gradient: LinearGradient(
+                        begin: Alignment(0, 0.8), 
+                        end: Alignment(0, 0),
+                        colors: []
+                      )
+                    )
+                  )
                 ],
               ),
             ),
