@@ -68,7 +68,7 @@ class _AuthFormState extends State<AuthForm>
   }
 
   bool _isLogin() => _authMode == AuthMode.Login;
-  bool _isSignup() => _authMode == AuthMode.Signup;
+  //bool _isSignup() => _authMode == AuthMode.Signup;
 
   void _switchAuthMode() {
     setState(() {
