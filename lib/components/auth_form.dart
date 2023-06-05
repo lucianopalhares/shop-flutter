@@ -55,7 +55,7 @@ class _AuthFormState extends State<AuthForm>
       )
     );
 
-   /* _heightAnimation.addListener(() => 
+    /*_heightAnimation.addListener(() => 
       setState(() {})
     );*/
   }
@@ -145,101 +145,95 @@ class _AuthFormState extends State<AuthForm>
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10) 
       ),
-      child: AnimatedBuilder(
-        animation: _heightAnimation,
-        builder: (ctx, childForm) => 
-          Container(
-            //height: _isLogin() ? 310 : 400, 
-            height: _heightAnimation?.value.height 
-              ?? (_isLogin() ? 310 : 400), 
-            width: deviceSize.width * 0.75,
-            padding: const EdgeInsets.all(16),
-            child: childForm
-          )
-        ,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+        //height: _isLogin() ? 310 : 400, 
+        height: _isLogin() ? 310 : 400, 
+        width: deviceSize.width * 0.75,
+        padding: const EdgeInsets.all(16),
         child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Email'
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    onSaved: (email) => 
-                      _authData['email'] = email ?? '', 
-                    validator: (_email) {
-                      final email = _email ?? '';
-                      if (email.trim().isEmpty || !email.contains('@')) {
-                        return 'Informe um email válido';
-                      }
-                      return null;
-                    },
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Email'
+                ),
+                keyboardType: TextInputType.emailAddress,
+                onSaved: (email) => 
+                  _authData['email'] = email ?? '', 
+                validator: (_email) {
+                  final email = _email ?? '';
+                  if (email.trim().isEmpty || !email.contains('@')) {
+                    return 'Informe um email válido';
+                  }
+                  return null;
+                },
+              ), 
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Senha'
+                ),
+                keyboardType: TextInputType.emailAddress,
+                obscureText: true,
+                onSaved: (password) => 
+                  _authData['password'] = password ?? '', 
+                controller: _passwordController,
+                validator: (_password) {
+                  final password = _password ?? '';
+                  if (password.isEmpty || password.length < 5) {
+                    return 'Informe uma senha válida';
+                  }
+                  return null;
+                },
+              ), 
+              if (_isSignup()) 
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Confirmação de Senha'
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  obscureText: true,
+                  validator: _isLogin()
+                    ? null 
+                    : (_password) {
+                    final password = _password ?? '';
+                    if (password != _passwordController.text) {
+                      return 'Senhas informadas nao conferem';
+                    }
+                    return null;
+                  },
+                ),
+              SizedBox(height: 20,), 
+              if (_isLoading) 
+                CircularProgressIndicator()
+              else
+                ElevatedButton(
+                  onPressed: _submit, 
+                  child: Text(
+                    _isLogin() ? 'ENTRAR' : 'REGISTRAR'
                   ), 
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Senha'
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    obscureText: true,
-                    onSaved: (password) => 
-                      _authData['password'] = password ?? '', 
-                    controller: _passwordController,
-                    validator: (_password) {
-                      final password = _password ?? '';
-                      if (password.isEmpty || password.length < 5) {
-                        return 'Informe uma senha válida';
-                      }
-                      return null;
-                    },
-                  ), 
-                  if (_isSignup()) 
-                    TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Confirmação de Senha'
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      obscureText: true,
-                      validator: _isLogin()
-                        ? null 
-                        : (_password) {
-                        final password = _password ?? '';
-                        if (password != _passwordController.text) {
-                          return 'Senhas informadas nao conferem';
-                        }
-                        return null;
-                      },
-                    ),
-                  SizedBox(height: 20,), 
-                  if (_isLoading) 
-                    CircularProgressIndicator()
-                  else
-                    ElevatedButton(
-                      onPressed: _submit, 
-                      child: Text(
-                        _isLogin() ? 'ENTRAR' : 'REGISTRAR'
-                      ), 
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)
-                        ), 
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 30, 
-                          vertical: 8
-                        )
-                      ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)
                     ), 
-                  Spacer(), 
-                  TextButton(
-                    onPressed: _switchAuthMode, 
-                    child: Text(
-                      _isLogin() ? 'DESEJA REGISTRAR?' : 'JÁ POSSUI CONTA?'
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30, 
+                      vertical: 8
                     )
-                  )
-                ],
+                  ),
+                ), 
+              Spacer(), 
+              TextButton(
+                onPressed: _switchAuthMode, 
+                child: Text(
+                  _isLogin() ? 'DESEJA REGISTRAR?' : 'JÁ POSSUI CONTA?'
+                )
               )
-            )
-        
+            ],
+          )
+        ),
       ),
     );
   }
