@@ -29,57 +29,61 @@ class _OrderWidgetState extends State<OrderWidget> {
 
     final itemsHeight = itemsHeightInteger.toDouble();
 
-    return Card(
-      child: Column(
-        children: [
-          ListTile(
-            title: Text('R\$ ${widget.order.total.toStringAsFixed(2)}'),
-            subtitle: Text(
-              DateFormat('dd/MM/yyyy hh:mm').format(widget.order.date)
-            ),
-            trailing: IconButton(
-              onPressed: () {
-                setState(() {
-                  _expanded = !_expanded;
-                });
-              }, 
-              icon: Icon(Icons.expand_more)
-            ),
-          ),
-          if (_expanded)
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 4
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300), 
+      height: _expanded ? itemsHeight + 80 : 80,
+      child: Card(
+        child: Column(
+          children: [
+            ListTile(
+              title: Text('R\$ ${widget.order.total.toStringAsFixed(2)}'),
+              subtitle: Text(
+                DateFormat('dd/MM/yyyy hh:mm').format(widget.order.date)
               ),
-              height: itemsHeight,
-              child: ListView(
-                children: widget.order.products.map(
-                  (product) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          product.name,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold
+              trailing: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _expanded = !_expanded;
+                  });
+                }, 
+                icon: Icon(Icons.expand_more)
+              ),
+            ),
+              AnimatedContainer(
+                duration: Duration(milliseconds: 300), 
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 4
+                ),
+                height: _expanded ? itemsHeight : 0,
+                child: ListView(
+                  children: widget.order.products.map(
+                    (product) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            product.name,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                            ),
                           ),
-                        ),
-                        Text(
-                          '${product.quantity}x R\$ ${product.price}',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                ).toList(),
+                          Text(
+                            '${product.quantity}x R\$ ${product.price}',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  ).toList(),
+                )
               )
-            )
-        ],
+          ],
+        ),
       ),
     );
   }
