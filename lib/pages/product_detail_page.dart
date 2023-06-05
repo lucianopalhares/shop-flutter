@@ -22,12 +22,17 @@ class ProductDetailPage extends StatelessWidget {
             pinned: true, 
             flexibleSpace: FlexibleSpaceBar(
               title: Text(product.name),
-              background: Hero(
-                tag: product.id,//um identificador unico
-                child: Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Hero(
+                    tag: product.id,//um identificador unico
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
               ),
             ),
           ), 
