@@ -188,7 +188,14 @@ class _AuthFormState extends State<AuthForm>
                   return null;
                 },
               ), 
-                FadeTransition(
+              AnimatedContainer(
+                constraints: BoxConstraints(
+                  minHeight: _isLogin() ? 0 : 100, 
+                  maxHeight: _isLogin() ? 0 : 150,
+                ),
+                duration: Duration(microseconds: 300),
+                curve: Curves.linear,
+                child: FadeTransition(
                   opacity: _opacityAnimation,
                   child: TextFormField(
                     decoration: InputDecoration(
@@ -207,7 +214,7 @@ class _AuthFormState extends State<AuthForm>
                     },
                   ),
                 ),
-              
+              ),
               SizedBox(height: 20,), 
               if (_isLoading) 
                 CircularProgressIndicator()
