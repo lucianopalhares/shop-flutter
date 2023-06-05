@@ -31,7 +31,7 @@ class _AuthFormState extends State<AuthForm>
   bool _isLoading = false;
 
   late AnimationController _controller;
-  late Animation<Size> _heightAnimation;
+  late Animation<double> _opacityAnimation;
 
   @override
   void initState() {
@@ -45,9 +45,9 @@ class _AuthFormState extends State<AuthForm>
       )
     );
 
-    _heightAnimation = Tween(
-      begin: Size(double.infinity, 310), //reverse
-      end: Size(double.infinity, 400)//forward
+    _opacityAnimation = Tween(
+      begin: 0.0, //reverse
+      end: 1.0//forward
     ).animate(
       CurvedAnimation(
         parent: _controller, 
@@ -188,23 +188,26 @@ class _AuthFormState extends State<AuthForm>
                   return null;
                 },
               ), 
-              if (_isSignup()) 
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Confirmação de Senha'
+                FadeTransition(
+                  opacity: _opacityAnimation,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Confirmação de Senha'
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    obscureText: true,
+                    validator: _isLogin()
+                      ? null 
+                      : (_password) {
+                      final password = _password ?? '';
+                      if (password != _passwordController.text) {
+                        return 'Senhas informadas nao conferem';
+                      }
+                      return null;
+                    },
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  obscureText: true,
-                  validator: _isLogin()
-                    ? null 
-                    : (_password) {
-                    final password = _password ?? '';
-                    if (password != _passwordController.text) {
-                      return 'Senhas informadas nao conferem';
-                    }
-                    return null;
-                  },
                 ),
+              
               SizedBox(height: 20,), 
               if (_isLoading) 
                 CircularProgressIndicator()
