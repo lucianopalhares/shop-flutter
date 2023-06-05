@@ -32,6 +32,7 @@ class _AuthFormState extends State<AuthForm>
 
   late AnimationController _controller;
   late Animation<double> _opacityAnimation;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
@@ -48,6 +49,16 @@ class _AuthFormState extends State<AuthForm>
     _opacityAnimation = Tween(
       begin: 0.0, //reverse
       end: 1.0//forward
+    ).animate(
+      CurvedAnimation(
+        parent: _controller, 
+        curve: Curves.linear
+      )
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: Offset(0, -1.5), //reverse
+      end: Offset(0, 0)//forward
     ).animate(
       CurvedAnimation(
         parent: _controller, 
@@ -197,21 +208,24 @@ class _AuthFormState extends State<AuthForm>
                 curve: Curves.linear,
                 child: FadeTransition(
                   opacity: _opacityAnimation,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Confirmação de Senha'
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Confirmação de Senha'
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      obscureText: true,
+                      validator: _isLogin()
+                        ? null 
+                        : (_password) {
+                        final password = _password ?? '';
+                        if (password != _passwordController.text) {
+                          return 'Senhas informadas nao conferem';
+                        }
+                        return null;
+                      },
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    obscureText: true,
-                    validator: _isLogin()
-                      ? null 
-                      : (_password) {
-                      final password = _password ?? '';
-                      if (password != _passwordController.text) {
-                        return 'Senhas informadas nao conferem';
-                      }
-                      return null;
-                    },
                   ),
                 ),
               ),
