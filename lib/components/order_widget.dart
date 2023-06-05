@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -23,6 +25,10 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final itemsHeightInteger = (widget.order.products.length * 25) + 10;
+
+    final itemsHeight = itemsHeightInteger.toDouble();
+
     return Card(
       child: Column(
         children: [
@@ -46,7 +52,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                 horizontal: 15,
                 vertical: 4
               ),
-              height: (widget.order.products.length * 25) + 10,
+              height: itemsHeight,
               child: ListView(
                 children: widget.order.products.map(
                   (product) {
