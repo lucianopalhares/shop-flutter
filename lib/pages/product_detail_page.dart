@@ -22,22 +22,18 @@ class ProductDetailPage extends StatelessWidget {
             pinned: true, 
             flexibleSpace: FlexibleSpaceBar(
               title: Text(product.name),
+              background: Hero(
+                tag: product.id,//um identificador unico
+                child: Image.network(
+                  product.imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ), 
           SliverList(
             delegate: SliverChildListDelegate(
              [
-                Container(
-                  height: 300,
-                  width: double.infinity,
-                  child: Hero(
-                    tag: product.id,//um identificador unico
-                    child: Image.network(
-                      product.imageUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
                 SizedBox(height: 10),
                 Text(
                   'R\$ ${product.price}',
