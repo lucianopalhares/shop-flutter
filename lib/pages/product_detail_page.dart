@@ -37,7 +37,10 @@ class ProductDetailPage extends StatelessWidget {
                       gradient: LinearGradient(
                         begin: Alignment(0, 0.8), 
                         end: Alignment(0, 0),
-                        colors: []
+                        colors: [
+                          Color.fromRGBO(0, 0, 0, 0.6), 
+                          Color.fromRGBO(0, 0, 0, 0)
+                        ]
                       )
                     )
                   )
